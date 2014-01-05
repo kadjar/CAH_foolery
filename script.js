@@ -10,9 +10,15 @@ var dom = {
   displayDataList: document.getElementById('displayDataList'),
   displayDataSingle: document.getElementById('displayDataSingle'),
   brailleInput: document.getElementById('brailleInput'),
+  colorInput: document.getElementById('colorInput'),
   brailleButton: document.getElementById('createBrailleVertical'),
   runCountSlider: document.getElementById('runCountSlider'),
   runCountDisplay: document.getElementById('runCountDisplay')
+}
+
+var config = {
+  color: 'G',
+  order: 'horiz'
 }
 
 var tmpl = {
@@ -51,7 +57,7 @@ function buildTable(el, dataset) {
     var sc = new tmpl.cell();
 
     sc.setAttribute('colspan', 2);
-    sc.textContent = brailleComparator(resliced.out[i], "G")
+    sc.textContent = brailleComparator(resliced.out[i], config.color)
 
     sr.appendChild(sc);
     nt.appendChild(sr);    
@@ -66,7 +72,12 @@ function buildTable(el, dataset) {
 }
 
 function buildRows(el, arr, rowCount) {
-  var resliced = reSliceArray(arr, rowCount);
+  var resliced;
+
+  if (config.order == 'vert')
+    arr = changeOrientation(arr);
+
+  resliced = reSliceArray(arr, rowCount);
 
   for (var i=0; i < rowCount; i++) {
     var nr = new tmpl.row();
@@ -83,6 +94,17 @@ function buildCells(el, arr) {
 
     el.appendChild(nc);
   }
+}
+
+function changeOrientation(arr) {
+  var out = [];
+  out.push(arr[0]);
+  out.push(arr[3]);
+  out.push(arr[1]);
+  out.push(arr[4]);
+  out.push(arr[2]);
+  out.push(arr[5]);
+  return out;
 }
 
 function reSliceArray(data, rowcount) {
@@ -108,6 +130,8 @@ function brailleComparator(inArr, key) {
 }
 
 dom.brailleButton.addEventListener('click', function() {
+  setConfigValues();
+
   var na;
   for (var i=0; i < dom.runCountSlider.value; i++) {
     na = JSON.parse(dom.brailleInput.value);
@@ -130,6 +154,19 @@ function buildDisplayValues() {
   }
 
   dom.displayDataSingle.value = JSON.stringify(lightdata.singlearray);
+}
+
+function setConfigValues() {  
+  config.color = getCheckedValue(document.querySelectorAll('input[name="colorInput"]'))
+  config.order = getCheckedValue(document.querySelectorAll('input[name="interpOrder"]'))
+}
+function getCheckedValue(elArr) {
+  var val;
+  for (var i=0; i < elArr.length; i++) {
+    if (elArr[i].checked)
+      val = elArr[i].value
+  }
+  return val;
 }
 
 buildDisplayValues()

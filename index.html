@@ -17,7 +17,15 @@
   <ol id='displayDataList'>
   </ol>
   <p>All days: <input type="text" name="" id="displayDataSingle"></p>
+  
+  <h1>Input:</h1>
+
   <p>Data input: <input type="text" id="brailleInput" /></p>
+  <p>Color to check against: <br>
+  <input type="radio" name="colorInput" value="G" checked>:Green - <input type="radio" name="colorInput" value="B">:Blue - <input type="radio" name="colorInput" value="Y">:Yellow - <input type="radio" name="colorInput" value="R">:Red - <input type="radio" name="colorInput" value="V">:Violet</p>
+  <p>Interpretation order: <br>
+  <input type="radio" name="interpOrder" value="horiz" checked>[1,2,3,4,5,6] -> [1,2], [3,4], [5,6]<br>
+  <input type="radio" name="interpOrder" value="vert">[1,2,3,4,5,6] -> [1,4], [2,5], [3,6]</p>
   <p><button id="createBrailleVertical">Get Braille</button> - [1,2,3,4,5,6,7,8...] -> [1,2],[3,4],[5,6]</p>
   <p>Run this many times: <input type="range" name="points" min="1" max="100" value="1" id="runCountSlider"><span id="runCountDisplay">1</span></p>
   
