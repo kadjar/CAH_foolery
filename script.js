@@ -19,7 +19,10 @@ var tmpl = {
     table: function() { return document.createElement('table'); },
     row: function() { return document.createElement("tr"); },
     cell: function() { return document.createElement("td"); },
-    note: function() { return document.createElement('em'); },
+    note: function(inp) { 
+      var nt = document.createElement('p');
+      nt.textContent = inp;
+      return nt},
     li: function() { return document.createElement('li'); },
     textInput: function(value) { 
       var ti = document.createElement('input');
@@ -31,8 +34,9 @@ var tmpl = {
 }
 
 function buildTable(el, dataset) {
+  var p = new tmpl.note(JSON.stringify(dataset))
   var t = new tmpl.table();
-  var r = new tmpl.row();  
+  var r = new tmpl.row();
 
   var dataLen = dataset.length;
   var letterCount = (dataLen - (dataLen % 6) ) / 6;
@@ -57,6 +61,7 @@ function buildTable(el, dataset) {
   }
 
   t.appendChild(r);
+  el.appendChild(p);
   el.appendChild(t);  
 }
 
