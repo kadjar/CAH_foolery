@@ -7,6 +7,9 @@ var dom = {
   // offsetSlider: document.getElementById('offsetSlider'),
   // offsetDisplay: document.getElementById('offsetDisplay'),
   // brailleButton: document.getElementById('getBrailleButton')
+  displayDataList: document.getElementById('displayDataList'),
+  displayDataSingle: document.getElementById('displayDataSingle'),
+  brailleInput: document.getElementById('brailleInput'),
   brailleButton: document.getElementById('createBrailleVertical'),
   runCountSlider: document.getElementById('runCountSlider'),
   runCountDisplay: document.getElementById('runCountDisplay')
@@ -16,7 +19,15 @@ var tmpl = {
     table: function() { return document.createElement('table'); },
     row: function() { return document.createElement("tr"); },
     cell: function() { return document.createElement("td"); },
-    note: function() { return document.createElement('em'); }
+    note: function() { return document.createElement('em'); },
+    li: function() { return document.createElement('li'); },
+    textInput: function(value) { 
+      var ti = document.createElement('input');
+      ti.setAttribute('type', 'text');
+      ti.setAttribute('value', value);
+
+      return ti;      
+    }
 }
 
 function buildTable(el, dataset) {
@@ -92,14 +103,31 @@ function brailleComparator(inArr, key) {
 }
 
 dom.brailleButton.addEventListener('click', function() {
+  var na;
   for (var i=0; i < dom.runCountSlider.value; i++) {
-    buildTable(dom.body, lightdata.singlearray)
+    na = JSON.parse(dom.brailleInput.value);
+    na = na.multishift(i);
+    buildTable(dom.body, na)
   }
 })
 
 dom.runCountSlider.addEventListener('change', function(e) {
   dom.runCountDisplay.textContent = e.target.value;
 })
+
+function buildDisplayValues() {
+  for (var i=0; i < lightdata.arrayset.length; i++) {
+    var li = new tmpl.li();
+    var inp = new tmpl.textInput(JSON.stringify(lightdata.arrayset[i]))
+
+    li.appendChild(inp);
+    dom.displayDataList.appendChild(li);
+  }
+
+  dom.displayDataSingle.value = JSON.stringify(lightdata.singlearray);
+}
+
+buildDisplayValues()
 
 // function createBrailleTable(count) {
 //   var na = lightdata.singlearray.multishift(count || dom.offsetSlider.value)
