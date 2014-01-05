@@ -1,0 +1,16 @@
+/* Styles go here */
+
+table {
+ margin-bottom: 50px; 
+}
+
+td {
+    height: 10px;
+    width: 30px;
+    text-align: center;
+}
+.green {background: green; color: green;}
+.blue {background: blue; color: blue;}
+.yellow {background: yellow; color: yellow;}
+.red {background: red; color: red;}
+.violet {background: violet; color: violet;}
