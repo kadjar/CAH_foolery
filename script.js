@@ -51,13 +51,18 @@ function buildTable(el, dataset) {
   for (var i=0; i < letterCount; i++) {
     var c = new tmpl.cell();
     var nt = new tmpl.table();
-    buildRows(nt, resliced.out[i], 3);
+    var data = resliced.out[i];
+
+    if (config.order == 'vert')
+      data = changeOrientation(data);
+
+    buildRows(nt, data, 3);
 
     var sr = new tmpl.row();
     var sc = new tmpl.cell();
 
     sc.setAttribute('colspan', 2);
-    sc.textContent = brailleComparator(resliced.out[i], config.color)
+    sc.textContent = brailleComparator(data, config.color)
 
     sr.appendChild(sc);
     nt.appendChild(sr);    
@@ -72,12 +77,7 @@ function buildTable(el, dataset) {
 }
 
 function buildRows(el, arr, rowCount) {
-  var resliced;
-
-  if (config.order == 'vert')
-    arr = changeOrientation(arr);
-
-  resliced = reSliceArray(arr, rowCount);
+  var resliced= reSliceArray(arr, rowCount);
 
   for (var i=0; i < rowCount; i++) {
     var nr = new tmpl.row();
