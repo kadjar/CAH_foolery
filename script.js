@@ -21,12 +21,14 @@ var tmpl = {
 
 function buildTable(el, dataset) {
   var t = new tmpl.table();
-  var r = new tmpl.row();
+  var r = new tmpl.row();  
+
   var dataLen = dataset.length;
-  var letterCount = (dataLen - (dataLen.length % 6) ) / 6;
+  var letterCount = (dataLen - (dataLen % 6) ) / 6;
   var resliced = reSliceArray(dataset, letterCount);
 
   for (var i=0; i < letterCount; i++) {
+    var c = new tmpl.cell();
     var nt = new tmpl.table();
     buildRows(nt, resliced.out[i], 3);
 
@@ -39,7 +41,8 @@ function buildTable(el, dataset) {
     sr.appendChild(sc);
     nt.appendChild(sr);    
 
-    r.appendChild(nt);
+    c.appendChild(nt);
+    r.appendChild(c);
   }
 
   t.appendChild(r);
@@ -47,21 +50,18 @@ function buildTable(el, dataset) {
 }
 
 function buildRows(el, arr, rowCount) {
-  var nr;
-  var resliced = reSliceArray(arr, rowCount;
+  var resliced = reSliceArray(arr, rowCount);
 
   for (var i=0; i < rowCount; i++) {
-    nr = new tmpl.row();
-    buildCells(nr, resliced.out)    
-  }
-
-  el.appendChild(nr);
+    var nr = new tmpl.row();
+    buildCells(nr, resliced.out[i])
+    el.appendChild(nr);
+  } 
 }
 
 function buildCells(el, arr) {
-  var nc;
   for (var i=0; i < arr.length; i++) {
-    nc = new tmpl.cell();
+    var nc = new tmpl.cell();
     nc.className = colorMap[arr[i]];
     nc.textContent = arr[i];
 
@@ -73,7 +73,7 @@ function reSliceArray(data, rowcount) {
   var perrow = (data.length - data.length % rowcount) / rowcount
   var out = [];
   for (var i=0; i < rowcount; i++) {
-    out.push(data.slice((i * perrow), ((i * perrow) + (perrow -1))))
+    out.push(data.slice((i * perrow), ((i * perrow) + (perrow))))
   }
   return { out: out, perrow: perrow, remainder: data.length % rowcount, rowCount: out.length };
 }
@@ -93,7 +93,7 @@ function brailleComparator(inArr, key) {
 
 dom.brailleButton.addEventListener('click', function() {
   for (var i=0; i < dom.runCountSlider.value; i++) {
-    buildTable(dom.body, lightdata.singlearray, )
+    buildTable(dom.body, lightdata.singlearray)
   }
 })
 
